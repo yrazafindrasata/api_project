@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <a href="{{ path('user_show')}}">select user </a>
+    <a href="{{ path('new_user')}}">create user</a>
+    <a href="{{ path('ad_index', {'id': user.id}) }}">show ads</a>
+
+    <h1>Contact</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>Firstname</th>
+            <td>{{ user.first_name }}</td>
+        </tr>
+        <tr>
+            <th>Lastname</th>
+            <td>{{ user.last_name }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Phone_number</th>
+            <td>{{ user.phone }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('new_ad', {'id': user.id}) }}">new ad</a>
+
+    <h1>ads with your messages</h1>
+    {% for ad in ads %}
+        <a href="{{ path('ad_show', {'id': user.id, 'ad_id': ad.ad_id}) }}">{{ ad.ad_by_ad_id.title }}</a>
+    {% endfor %}
+
+{% endblock %}

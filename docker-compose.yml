@@ -1,0 +1,140 @@
+version: '3.7'
+
+services:
+
+  ipssi-api-portainer:
+    container_name: ipssi-api-portainer
+    image: ipssi-api-portainer
+    build:
+      context: ./
+      dockerfile: docker/portainer/Dockerfile
+      args:
+        PORTAINER_VERSION: 1.23.2
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    tty: true
+    ports:
+      - 20020:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - data-portainer:/data
+
+  ipssi-api-postgres:
+    container_name: ipssi-api-postgres
+    image: ipssi-api-postgres
+    restart: always
+    build:
+      context: ./
+      dockerfile: docker/postgres/Dockerfile
+      args:
+        POSTGRES_VERSION: latest
+    environment:
+      POSTGRES_DB: ipssi
+      POSTGRES_USER: ipssi
+      POSTGRES_PASSWORD: SuperSecret
+    ports:
+      - 20021:5432
+    volumes:
+      - data-postgressql:/var/lib/postgresql/data
+
+  ipssi-api-pgadmin:
+    container_name: ipssi-api-pgadmin
+    image: ipssi-api-pgadmin
+    restart: always
+    build:
+      context: ./
+      dockerfile: docker/pgadmin/Dockerfile
+      args:
+        PGADMIN_VERSION: 4.20
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+      PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
+    ports:
+      - 20022:80
+
+  ipssi-api-redis:
+    container_name: ipssi-api-redis
+    image: ipssi-api-redis
+    build:
+      context: ./
+      dockerfile: docker/redis/Dockerfile
+      args:
+        REDIS_VERSION: latest
+    volumes:
+      - data-redis:/bitnami
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  ipssi-api-mongodb:
+    container_name: ipssi-api-mongodb
+    image: ipssi-api-mongodb
+    build:
+      context: ./
+      dockerfile: docker/mongodb/Dockerfile
+      args:
+        MONGODB_VERSION: latest
+    volumes:
+      - data-mongodb:/bitnami
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  ipssi-api-mariadb:
+    container_name: ipssi-api-mariadb
+    image: ipssi-api-mariadb
+    build:
+      context: ./
+      dockerfile: docker/mariadb/Dockerfile
+      args:
+        MARIADB_VERSION: latest
+    volumes:
+      - data-mariadb:/bitnami
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+
+  ipssi-api-dreamfactory:
+    container_name: ipssi-api-dreamfactory
+    image: ipssi-api-dreamfactory
+    build:
+      context: ./
+      dockerfile: docker/dreamfactorysoftware/Dockerfile
+      args:
+        DREAMFACTORY_VERSION: latest
+    depends_on:
+      - ipssi-api-mariadb
+      - ipssi-api-redis
+      - ipssi-api-mongodb
+    ports:
+      - 20023:80
+    volumes:
+      - data-dream:/bitnami
+    environment:
+      MARIADB_HOST: ipssi-api-mariadb
+      MARIADB_USER: root
+      MARIADB_PASSWORD: root
+      REDIS_HOST: ipssi-api-redis
+      MONGODB_HOST: ipssi-api-mongodb
+      DREAMFACTORY_ENABLE_POSTGRESQL_DATABASE: 'yes'
+
+  web:
+    image: webdevops/php-nginx:7.4
+    working_dir: /app
+    ports:
+      - 80:80
+    #    depends_on:
+    #      - database
+    volumes:
+      - .:/app
+    environment:
+      WEB_DOCUMENT_ROOT: /app/public
+      WEB_DOCUMENT_INDEX: index.php
+      PHP_DATE_TIMEZONE: "Europe/Paris"
+      PHP_DISPLAY_ERRORS: 1
+
+volumes:
+  data-portainer:
+  data-postgressql:
+  data-redis:
+  data-mongodb:
+  data-mariadb:
+  data-dream:

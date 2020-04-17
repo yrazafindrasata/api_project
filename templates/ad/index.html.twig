@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact index{% endblock %}
+
+{% block body %}
+    <a href="{{ path('user_show')}}">select user </a>
+    <a href="{{ path('new_user')}}">create user</a>
+    <a href="{{ path('user_show', {'id': user_id}) }}">profil</a>
+    <a href="{{ path('ad_index', {'id': user_id}) }}">show ads</a>
+
+    <h1>Ad index</h1>
+    <table id="adt" class="table">
+        <thead>
+        <tr>
+{#            <th>Id</th>#}
+            <th>title</th>
+            <th>description</th>
+            <th>city</th>
+            <th>country</th>
+            <th>more</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users.resource %}
+            {% for ad in user.ad_by_user_id %}
+                <tr>
+                    {#                <td>{{ ad.id }}</td>#}
+                    <td>{{ ad.title }}</td>
+                    <td>{{ ad.description }}</td>
+                    <td>{{ user.address_by_user_id.city }}</td>
+                    <td>{{ user.address_by_user_id.country }}</td>
+                    <td><a href="{{ path('ad_show', {'id': user_id, 'ad_id': ad.id}) }}">show</a></td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready( function () {
+            $('#adt').DataTable();
+        } );
+    </script>
+
+{% endblock %}

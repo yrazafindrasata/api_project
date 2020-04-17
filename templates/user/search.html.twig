@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <a href="{{ path('user_show')}}">select user </a>
+    <a href="{{ path('new_user')}}">create user</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <form action="user" method="get">
+                    <div class="form-group">
+                        <label for="search">User id</label>
+                        <input type="text" class="form-control" id="id" name="id" >
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

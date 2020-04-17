@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <a href="{{ path('user_show')}}">select user </a>
+    <a href="{{ path('new_user')}}">create user</a>
+<div class="container">
+<div class="row">
+    <div class="col-3">
+        <form action="{{ path('new_user') }}" method="post">
+            <div class="form-group">
+                <label for="fistname">First name</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" >
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last name</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" >
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" name="email" >
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender">
+                    <option selected>Choose...</option>
+                    <option value="F">F</option>
+                    <option value="M">M</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" >
+            </div>
+            <div class="form-group">
+                <label for="birth_date">Birth Date</label>
+                <input type="date" class="form-control" id="birth_date" name="birth_date" >
+            </div>
+
+
+            <div class="form-group">
+                <label for="address1">Address 1</label>
+                <input type="text" class="form-control" id="address1" name="address1" >
+            </div>
+            <div class="form-group">
+                <label for="address2">Address 2</label>
+                <input type="text" class="form-control" id="address2" name="address2" >
+            </div>
+            <div class="form-group">
+                <label for="postal_code">Postal Code</label>
+                <input type="text" class="form-control" id="postal_code" name="postal_code" >
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" name="city" >
+            </div>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" id="country" name="country" >
+            </div>
+            <div class="form-group">
+                <label for="latitude">latitude</label>
+                <input type="number" step="0.001" class="form-control" id="latitude" name="latitude" >
+            </div>
+            <div class="form-group">
+                <label for="longitude">longitude</label>
+                <input type="number" step="0.001" class="form-control" id="longitude" name="longitude" >
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+</div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

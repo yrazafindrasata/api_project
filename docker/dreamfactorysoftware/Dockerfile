@@ -1,0 +1,3 @@
+ARG DREAMFACTORY_VERSION
+
+FROM dreamfactorysoftware/df-docker:${DREAMFACTORY_VERSION}

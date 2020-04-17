@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <a href="{{ path('user_show')}}">select user </a>
+    <a href="{{ path('new_user')}}">create user</a>
+    <a href="{{ path('user_show', {'id': user_id}) }}">profil</a>
+    <a href="{{ path('ad_index', {'id': user_id}) }}">show ads</a>
+    <h1>ad</h1>
+
+    <table class="table">
+        <tbody>
+{#        <tr>#}
+{#            <th>Id</th>#}
+{#            <td>{{ ad.id }}</td>#}
+{#        </tr>#}
+        <tr>
+            <th>Title</th>
+            <td>{{ ad.title }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ ad.description }}</td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td>{{ ad.category_by_category_id.name }}</td>
+        </tr>
+        <tr>
+            <th>Supplier</th>
+            <td>{{ ad.user_by_user_id.first_name }} {{ ad.user_by_user_id.last_name }}</td>
+        </tr>
+        <tr>
+            <th>City</th>
+            <td>{{ address.resource.0.city }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
+    <a href="{{ path('new_mission', {'id': user_id, 'ad_id': ad.id}) }}">add mission</a>
+    <a href="{{ path('ad_index', {'id': user_id}) }}">return to ads</a>
+
+    <h1>Messages</h1>
+{#    {% for message in conversation.resource.0.message_by_conversation_id %}#}
+{#        <table class="table">#}
+{#            <tbody>#}
+{#                <tr>#}
+{#                    <th>Id Sender</th>#}
+{#                    <td>{{ message.sender_id }}</td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <th>message</th>#}
+{#                    <td>{{ message.content }}</td>#}
+{#                </tr>#}
+{#            </tbody>#}
+{#        </table>#}
+{#    {% endfor %}#}
+    {% for message in messages.resource %}
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>{{ message.user_by_sender_id.first_name }} {{ message.user_by_sender_id.last_name }}</td>
+            </tr>
+            <tr>
+                <td>{{ message.content }}</td>
+            </tr>
+            <tr>
+                <td>{{ message.updated }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+    {% endfor %}
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <form action="{{ path('new_message', {'id': user_id, 'conversation_id': conversation.resource.0.id, 'ad_id': ad.id })}}" method="post">
+                    <div class="form-group">
+                        <label for="content">Message</label>
+                        <textarea  class="form-control" id="content" name="content"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

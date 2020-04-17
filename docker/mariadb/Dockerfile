@@ -1,0 +1,3 @@
+ARG MARIADB_VERSION
+
+FROM bitnami/mariadb:${MARIADB_VERSION}
